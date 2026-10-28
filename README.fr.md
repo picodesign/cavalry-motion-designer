@@ -1,5 +1,9 @@
 # Cavalry Motion Designer
 
+![statut : beta](https://img.shields.io/badge/statut-beta-orange) ![licence : MIT](https://img.shields.io/badge/licence-MIT-blue)
+
+> **Beta.** Ce skill est en développement actif. Attendez-vous à des aspérités, des attributs non vérifiés et des changements entre versions. Retours et rapports de test bienvenus.
+
 Un skill qui fait d'un agent de code un motion designer senior pour [Cavalry](https://cavalry.studio), l'application d'animation 2D procédurale. Il fonctionne avec le serveur MCP de Cavalry : l'agent lit la scène, la construit en JavaScript et vérifie le résultat à l'écran.
 
 > Projet communautaire non officiel, sans lien avec Canva ni l'équipe Cavalry. Cavalry est une marque de ses propriétaires.
