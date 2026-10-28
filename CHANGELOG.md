@@ -13,4 +13,5 @@ First public beta.
 - `nodes-catalogue.md`: nodes by category with verified attributes and an intent-to-node table.
 - `mcp-hints-digest.md`: digest of text animation, sub-mesh, colour, loops, paths and data visualisation.
 - `community-tips.md`: tips and pitfalls with sources and reliability tags.
-- `install.sh` to copy the skill into the agent skills folder.
+- `install.sh` and `install.ps1` to copy the skill into the agent skills folder.
+- Step-by-step install guide: MCP server connection, per-project install, verification, update and troubleshooting.

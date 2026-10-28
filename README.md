@@ -18,7 +18,29 @@ A skill that turns a coding agent into a senior motion designer for [Cavalry](ht
 
 ## Install
 
-You need Cavalry with its MCP server connected to your agent.
+Setup has two parts: connect Cavalry to your agent (once), then install the skill.
+
+### 1. Prerequisites
+
+- **Cavalry 2.8 or later**, running. The skill needs the app open to read and build the scene.
+- **The Cavalry MCP server**, connected to your agent. The skill does nothing without it.
+- **An agent that supports skills** (a folder with a `SKILL.md`).
+
+### 2. Connect the Cavalry MCP server
+
+The official guide is at <https://cavalry.studio/docs/tips/ai-automation-with-claude/>. In short, for Claude Desktop:
+
+1. Download `cavalry-mcp-server.zip` from that page and unzip it.
+2. In Claude, open **Settings > Desktop app > Extensions > Advanced settings > Open extensions folder**.
+3. Drag the `cavalry-mcp-server` folder into it, then quit and restart Claude.
+4. Back in **Extensions**, click **Configure** on "Cavalry by Canva" and turn it on.
+5. In Cavalry, open **Preferences** and check **Enable MCP Server**.
+
+Keep Cavalry and your agent running at the same time. The official page documents Claude Desktop only. For another agent, register the same server through that agent's MCP configuration.
+
+### 3. Install the skill
+
+macOS and Linux:
 
 ```sh
 git clone https://github.com/picodesign/cavalry-motion-designer.git
@@ -26,7 +48,46 @@ cd cavalry-motion-designer
 ./install.sh
 ```
 
-The script copies `skills/cavalry-motion-designer` to `~/.claude/skills/`. Restart your agent session afterwards. To install by hand, copy that folder to the skills directory of your agent.
+Windows (PowerShell):
+
+```powershell
+git clone https://github.com/picodesign/cavalry-motion-designer.git
+cd cavalry-motion-designer
+.\install.ps1
+```
+
+Both scripts copy `skills/cavalry-motion-designer` to your user skills folder (`~/.claude/skills` on macOS and Linux, `%USERPROFILE%\.claude\skills` on Windows). Restart your agent session afterwards.
+
+**For one project only**, pass a target folder:
+
+```sh
+./install.sh /path/to/your/project/.claude/skills
+```
+
+**Without git**, download the repository as a ZIP, unzip it and copy `skills/cavalry-motion-designer` into your agent's skills folder.
+
+### 4. Check that it works
+
+With Cavalry open, ask your agent:
+
+> Can you see the Cavalry MCP server? Then list the layers in my open scene.
+
+If it answers with the layers, the connection works. Then ask for something small to confirm the skill is loaded:
+
+> Create a 2 second title that fades in with an ease, and make the delay adjustable.
+
+A working install builds the title with a control null and an eased animation, then checks the result with a snapshot.
+
+### Update and uninstall
+
+- **Update:** `git pull`, then run the install script again. It replaces the installed copy.
+- **Uninstall:** delete the `cavalry-motion-designer` folder from your skills folder.
+
+### Troubleshooting
+
+- **The agent cannot see Cavalry:** make sure Cavalry 2.8 or later is open, **Enable MCP Server** is checked, then restart both apps.
+- **The skill never triggers:** restart the agent session and confirm that `cavalry-motion-designer/SKILL.md` sits directly inside the skills folder.
+- **A script fails halfway:** Cavalry does not roll back a failed script. Use undo in Cavalry, or ask the agent to delete what it created before retrying.
 
 ## Use
 
