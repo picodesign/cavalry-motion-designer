@@ -34,9 +34,46 @@ The official guide is at <https://cavalry.studio/docs/tips/ai-automation-with-cl
 2. In Claude, open **Settings > Desktop app > Extensions > Advanced settings > Open extensions folder**.
 3. Drag the `cavalry-mcp-server` folder into it, then quit and restart Claude.
 4. Back in **Extensions**, click **Configure** on "Cavalry by Canva" and turn it on.
-5. In Cavalry, open **Preferences** and check **Enable MCP Server**.
+5. In Cavalry, open **Preferences** and make sure the MCP server is enabled. It is on by default; the same panel shows the port.
 
-Keep Cavalry and your agent running at the same time. The official page documents Claude Desktop only. For another agent, register the same server through that agent's MCP configuration.
+Keep Cavalry and your agent running at the same time. The first time an agent connects, Cavalry shows an approval dialog: click **Allow**, otherwise tool calls are refused.
+
+#### Claude Code (terminal)
+
+The official page covers Claude Desktop. Claude Code uses the same server through a local bridge: the `cavalry-mcp-server` folder from the zip is a small Node.js program that talks to Cavalry on `localhost:6768`.
+
+1. Install [Node.js](https://nodejs.org) 18 or later.
+2. Unzip `cavalry-mcp-server.zip` into a permanent folder, for example `~/.claude/mcp/cavalry-mcp-server`. If the folder has no `node_modules`, run `npm install` inside it.
+3. Register the server for your user, so it is available in every project:
+
+   ```sh
+   claude mcp add cavalry --scope user \
+     -e SSE_URL=http://localhost:6768/sse \
+     -- node ~/.claude/mcp/cavalry-mcp-server/server/index.js
+   ```
+
+   If you changed the port in Cavalry's Preferences, change it in `SSE_URL` too. Claude Code stores the entry in `~/.claude.json`:
+
+   ```json
+   "cavalry": {
+     "type": "stdio",
+     "command": "node",
+     "args": ["/Users/you/.claude/mcp/cavalry-mcp-server/server/index.js"],
+     "env": { "SSE_URL": "http://localhost:6768/sse" }
+   }
+   ```
+
+4. Open Cavalry, then check the connection:
+
+   ```sh
+   claude mcp get cavalry
+   ```
+
+   It should report `Status: ✔ Connected`. Inside a `claude` session, `/mcp` shows the same. Approve the connection in Cavalry the first time.
+
+To remove it: `claude mcp remove cavalry -s user`.
+
+Privacy note from the server's own documentation: when you are signed in to a Canva account in Cavalry, the text of each script is sent to Canva for an automated safety check before it runs.
 
 ### 3. Install the skill
 
